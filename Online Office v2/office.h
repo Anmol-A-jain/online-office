@@ -67,6 +67,8 @@ private slots:
 
     void on_outlook_clicked();
 
+    void onPageUrlChange();
+
     void downloadRequested(QWebEngineDownloadItem* download)
     { Q_ASSERT(download && download->state() == QWebEngineDownloadItem::DownloadRequested);
 
@@ -101,5 +103,4 @@ public:
         return nullptr;
     }
 };
-
 #endif // OFFICE_H

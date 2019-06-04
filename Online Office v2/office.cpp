@@ -147,102 +147,128 @@ void Office::on_refresh_clicked()
     web->reload();
 }
 
+void Office::changeColor(QString backColor, QString fontColor)
+{
+    ui->mainWindow->setStyleSheet("#mainWindow{"
+                         "background-color:" + backColor +"}");
+    ui->refresh->setStyleSheet("background-color:" + backColor +";"
+                               "border-image:url(:/img/asset/reload.png);");
+    ui->back->setStyleSheet("background-color:" + backColor +"; "
+                            "border-image:url(:/img/asset/goBack.png);");
+    ui->next->setStyleSheet("background-color:" + backColor +"; "
+                            "border-image:url(:/img/asset/goNext.png);");
+    ui->title->setStyleSheet("color:" + fontColor +";"
+                             "background-color:" + backColor +";");
+}
 
 void Office::on_home_clicked()
-{
+{;
+    QWebEnginePage *temp = nullptr;
+    if(web->page() != page)
+    {
+        temp = web->page();
+    }
     page->setUrl(pageurl[PageName::home]);
+    web->setPage(page);
+
+    if(temp != nullptr)
+    {
+        delete temp;
+    }
     ui->title->setText("Office");
 
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:white}");
-    ui->refresh->setStyleSheet("background-color:white;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("color:black");
-
+    changeColor("white","black");
 
 }
 
+
 void Office::on_word_clicked()
-{
-    page->setUrl(pageurl[PageName::word]);
+{    QWebEnginePage *temp = nullptr;
+     if(web->page() != page)
+     {
+         temp = web->page();
+     }
+     page->setUrl(pageurl[PageName::word]);
+     web->setPage(page);
+
+     if(temp != nullptr)
+     {
+         delete temp;
+     }
     ui->title->setText("Word");
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:#19478a;}");
-    ui->refresh->setStyleSheet("background-color:#19478a;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:#19478a; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:#19478a; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("background-color:#19478a;"
-                             "color:white");
+
+    changeColor("#19478a","white");
 }
 
 void Office::on_excel_clicked()
 {
+    QWebEnginePage *temp = nullptr;
+    if(web->page() != page)
+    {
+        temp = web->page();
+    }
     page->setUrl(pageurl[PageName::excel]);
+    web->setPage(page);
+
+    if(temp != nullptr)
+    {
+        delete temp;
+    }
     ui->title->setText("Excel");
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:#0a6332;}");
-    ui->refresh->setStyleSheet("background-color:#0a6332;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:#0a6332; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:#0a6332; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("background-color:#0a6332;"
-                             "color:white");
+
+    changeColor("#0a6332","white");
 }
 
 void Office::on_powerpoint_clicked()
 {
+    QWebEnginePage *temp = nullptr;
+    if(web->page() != page)
+    {
+        temp = web->page();
+    }
     page->setUrl(pageurl[PageName::powerPoint]);
+    web->setPage(page);
+
+    if(temp != nullptr)
+    {
+        delete temp;
+    }
     ui->title->setText("PowerPoint");
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:#b83b1d;}");
-    ui->refresh->setStyleSheet("background-color:#b83b1d;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:#b83b1d; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:#b83b1d; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("background-color:#b83b1d;"
-                             "color:white");
+    changeColor("#b83b1d","white");
 }
 
 void Office::on_onedrive_clicked()
 {
+    QWebEnginePage *temp = nullptr;
+    if(web->page() != page)
+    {
+        temp = web->page();
+    }
     page->setUrl(pageurl[PageName::oneDrive]);
+    web->setPage(page);
+
+    if(temp != nullptr)
+    {
+        delete temp;
+    }
     ui->title->setText("OneDrive");
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:white}");
-    ui->refresh->setStyleSheet("background-color:white;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("color:black");
-
-
+    changeColor("white","black");
 }
 
 void Office::on_outlook_clicked()
 {
+    QWebEnginePage *temp = nullptr;
+    if(web->page() != page)
+    {
+        temp = web->page();
+    }
     page->setUrl(pageurl[PageName::outlook]);
-    ui->title->setText("Outlook");
+    web->setPage(page);
 
-    ui->mainWindow->setStyleSheet("#mainWindow{"
-                         "background-color:white}");
-    ui->refresh->setStyleSheet("background-color:white;"
-                               "border-image:url(:/img/asset/reload.png);");
-    ui->back->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goBack.png);");
-    ui->next->setStyleSheet("background-color:white; "
-                            "border-image:url(:/img/asset/goNext.png);");
-    ui->title->setStyleSheet("color:black");
+    if(temp != nullptr)
+    {
+        delete temp;
+    }
+    changeColor("white","black");
+    ui->title->setText("Outlook");
 }

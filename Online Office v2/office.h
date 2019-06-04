@@ -35,6 +35,7 @@ public:
     void setPageUrl();
     void setinstallevent();
     void setShadowColor();
+    void changeColor(QString backColor,QString fontColor);
     void closeEvent (QCloseEvent *event)
     {
         ExitApp *e = new ExitApp();

@@ -18,13 +18,13 @@ Office::Office(QWidget *parent) :
     setinstallevent();
 
     web = new webview();
-
     page = new QWebEnginePage();
     page->setUrl(pageurl[PageName::home]);
     web->setPage(page);
     web->setParent(ui->window);
 
     connect(QWebEngineProfile::defaultProfile(),SIGNAL(downloadRequested(QWebEngineDownloadItem *)),this,SLOT(downloadRequested(QWebEngineDownloadItem *)));
+    connect(web,SIGNAL(loadFinished(bool)),this,SLOT(onPageUrlChange()));
 }
 
 Office::~Office()
@@ -175,10 +175,6 @@ void Office::on_home_clicked()
     {
         delete temp;
     }
-    ui->title->setText("Office");
-
-    changeColor("white","black");
-
 }
 
 
@@ -195,9 +191,6 @@ void Office::on_word_clicked()
      {
          delete temp;
      }
-    ui->title->setText("Word");
-
-    changeColor("#19478a","white");
 }
 
 void Office::on_excel_clicked()
@@ -214,9 +207,6 @@ void Office::on_excel_clicked()
     {
         delete temp;
     }
-    ui->title->setText("Excel");
-
-    changeColor("#0a6332","white");
 }
 
 void Office::on_powerpoint_clicked()
@@ -233,8 +223,6 @@ void Office::on_powerpoint_clicked()
     {
         delete temp;
     }
-    ui->title->setText("PowerPoint");
-    changeColor("#b83b1d","white");
 }
 
 void Office::on_onedrive_clicked()
@@ -251,8 +239,6 @@ void Office::on_onedrive_clicked()
     {
         delete temp;
     }
-    ui->title->setText("OneDrive");
-    changeColor("white","black");
 }
 
 void Office::on_outlook_clicked()
@@ -262,13 +248,53 @@ void Office::on_outlook_clicked()
     {
         temp = web->page();
     }
-    page->setUrl(pageurl[PageName::outlook]);
     web->setPage(page);
+    page->setUrl(pageurl[PageName::outlook]);
 
     if(temp != nullptr)
     {
         delete temp;
     }
-    changeColor("white","black");
-    ui->title->setText("Outlook");
+}
+
+void Office::onPageUrlChange()
+{
+    qDebug() << web->page()->url().toString();
+    QString temp = web->page()->url().toString();
+    if(temp.contains(pageurl[PageName::word].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("Word");
+        changeColor("#19478a","white");
+    }
+    else if (temp.contains(pageurl[PageName::excel].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("excel");
+        changeColor("#0a6332","white");
+    }
+    else if (temp.contains(pageurl[PageName::powerPoint].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("PowerPoint");
+        changeColor("#b83b1d","white");
+    }
+    else if (temp.contains(pageurl[PageName::oneDrive].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("OneDrive");
+        changeColor("white","black");
+    }
+    else if (temp.contains(pageurl[PageName::oneDrive].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("Outlook");
+        changeColor("white","black");
+    }
+    else if (temp.contains(pageurl[PageName::oneDrive].toString(),Qt::CaseInsensitive))
+    {
+        ui->title->setText("Office");
+        changeColor("white","black");
+    }
+    else
+    {
+        ui->title->setText(web->page()->title());
+        changeColor("white","black");
+    }
+
 }

@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>asset/logo.ico</file>
+        <file>asset/goNext.png</file>
+        <file>asset/goBack.png</file>
+        <file>asset/exitPng.png</file>
+        <file>asset/goBack_white.png</file>
+        <file>asset/goNext_white.png</file>
+        <file>asset/reload.png</file>
+        <file>asset/reload_white.png</file>
+    </qresource>
+</RCC>

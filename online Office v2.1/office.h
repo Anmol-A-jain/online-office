@@ -48,8 +48,6 @@ private slots:
 
     void on_refresh_clicked();
 
-    void on_home_clicked();
-
     void on_word_clicked();
 
     void on_excel_clicked();
@@ -72,6 +70,7 @@ private:
     QHash<int,QColor> shadowcolor;
     historyList *history;
     bool flag;
+    QSet<int> keyEventCombo;
 };
 
 class historyList
@@ -79,7 +78,6 @@ class historyList
 private:
     historyList *first,*last,*current,*preNode,*nextNode;
     QString history;
-    int length;
 
 public:
 
@@ -91,8 +89,6 @@ public:
 
         preNode = nullptr;
         nextNode = nullptr;
-
-        length = 0;
     }
     void insert(QString str)
     {
@@ -120,7 +116,6 @@ public:
             last->nextNode = temp;
             last = temp;
         }
-        length++;
     }
 
     bool hasNext()
@@ -150,34 +145,6 @@ public:
         return false;
     }
 
-    QString currentUrl()
-    {
-        if(current != nullptr)
-            return current->history;
-        return nullptr;
-    }
-
-    QStringList allPages()
-    {
-        historyList *temp = new historyList;
-        temp = first;
-        QStringList list;
-
-        if(first == nullptr)
-        {
-            QStringList templist;
-            return  templist;
-        }
-
-        do
-        {
-            list.append(temp->history);
-            temp = temp->nextNode;
-        }while(temp != nullptr );
-
-        return list;
-    }
-
     QString previous()
     {
         if(current->preNode != nullptr)
@@ -185,6 +152,16 @@ public:
             current = current->preNode;
             return current->history;
         }
+    }
+    QString getPage()
+    {
+        return history;
+    }
+    QString currentUrl()
+    {
+        if(current != nullptr)
+            return current->history;
+        return nullptr;
     }
 
     void insertNext(QString str)
@@ -194,9 +171,9 @@ public:
         temp->nextNode = current->nextNode;
         temp->history = str;
 
-        current->nextNode = temp;
+        temp->nextNode->preNode = temp;
+        temp->preNode->nextNode = temp;
         current = temp;
-        length++;
     }
 
     historyList* firstpage()
@@ -212,11 +189,6 @@ public:
     historyList* lastPage()
     {
         return last;
-    }
-
-    int getLength()
-    {
-        return length;
     }
 };
 

@@ -58,7 +58,7 @@ void Office::downloadRequested(QWebEngineDownloadItem* download)
 
 void Office::setPageUrl()
 {
-    pageurl.insert(PageName::home,QUrl("https://www.office.com"));
+    pageurl.insert(PageName::home,QUrl("https://office.live.com/"));
     pageurl.insert(PageName::word,QUrl("https://office.live.com/start/Word.aspx"));
     pageurl.insert(PageName::excel,QUrl("https://office.live.com/start/Excel.aspx"));
     pageurl.insert(PageName::powerPoint,QUrl("https://office.live.com/start/PowerPoint.aspx"));
@@ -68,7 +68,6 @@ void Office::setPageUrl()
 
 void Office::setShadowColor()
 {
-    shadowcolor.insert(PageName::home,QColor(232, 63, 36));
     shadowcolor.insert(PageName::word,QColor(43, 87, 154));
     shadowcolor.insert(PageName::excel,QColor(33, 115, 70));
     shadowcolor.insert(PageName::powerPoint,QColor(210, 71, 38));
@@ -78,7 +77,6 @@ void Office::setShadowColor()
 
 void Office::setinstallevent()
 {
-    ui->home->installEventFilter(this);
     ui->word->installEventFilter(this);
     ui->excel->installEventFilter(this);
     ui->powerpoint->installEventFilter(this);
@@ -89,15 +87,11 @@ void Office::setinstallevent()
     ui->next->installEventFilter(this);
     ui->refresh->installEventFilter(this);
     ui->title->installEventFilter(this);
+    this->installEventFilter(this);
 }
 
 bool Office::eventFilter(QObject *obj, QEvent *event)
 {
-    if(obj == static_cast<QObject*> (ui->home) )
-    {
-        setShadowEffect(ui->home,shadowcolor[PageName::home],event);
-        return QWidget::eventFilter(obj,event);
-    }
     if(obj == static_cast<QObject*>(ui->word) )
     {
         setShadowEffect(ui->word,shadowcolor[PageName::word],event);
@@ -127,7 +121,7 @@ bool Office::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::HoverEnter)
         {
-            setShadow(ui->back,Qt::red);
+            setShadow(ui->back,Qt::green);
         }
 
         if(event->type() == QEvent::HoverLeave)
@@ -141,7 +135,7 @@ bool Office::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::HoverEnter)
         {
-            setShadow(ui->next,Qt::red);
+            setShadow(ui->next,Qt::green);
         }
         if(event->type() == QEvent::HoverLeave)
         {
@@ -154,7 +148,7 @@ bool Office::eventFilter(QObject *obj, QEvent *event)
     {
         if(event->type() == QEvent::HoverEnter)
         {
-            setShadow(ui->refresh,Qt::red);
+            setShadow(ui->refresh,Qt::green);
         }
         if(event->type() == QEvent::HoverLeave)
         {
@@ -162,6 +156,46 @@ bool Office::eventFilter(QObject *obj, QEvent *event)
         }
 
         return QWidget::eventFilter(obj,event);
+    }
+    if(event->type() == QEvent::KeyPress)
+    {
+        keyEventCombo.insert(static_cast<QKeyEvent*>(event)->key());
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_Left))
+        {
+            on_back_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_Right))
+        {
+            on_next_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_R))
+        {
+            on_refresh_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_1))
+        {
+            on_word_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_2))
+        {
+            on_excel_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_3))
+        {
+            on_powerpoint_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_4))
+        {
+            on_onedrive_clicked();
+        }
+        if(keyEventCombo.contains(Qt::Key_Alt) && keyEventCombo.contains(Qt::Key_5))
+        {
+            on_outlook_clicked();
+        }
+    }
+    if(event->type() == QEvent::KeyRelease)
+    {
+        keyEventCombo.clear();
     }
 
     return QWidget::eventFilter(obj,event);
@@ -203,16 +237,16 @@ void Office::on_back_clicked()
 {
     //web->back();
     flag = false;
-    QString url = web->page()->url().toString();
+    QString url= web->page()->url().toString();
+    QString temp = url;
     if(history->hasPrevious())
     {
         url = history->previous();
     }
-    if(url != web->page()->url().toString())
+    if(url != temp)
     {
-        web->page()->setUrl(QUrl(url));
+        web->page()->setUrl(url);
     }
-
 }
 
 void Office::on_next_clicked()
@@ -220,14 +254,16 @@ void Office::on_next_clicked()
     //web->forward();
     flag = false;
     QString url = web->page()->url().toString();
+        QString temp = url;
     if(history->hasNext())
     {
         url = history->next();
     }
-    if(url != web->page()->url().toString())
+    if(url != temp)
     {
-        web->page()->setUrl(QUrl(url));
+        web->page()->setUrl(url);
     }
+
 }
 
 void Office::on_refresh_clicked()
@@ -271,23 +307,11 @@ void Office::changeColor(QString backColor, QString fontColor)
 void Office::changePage(QUrl url)
 {
     QWebEnginePage *temp = nullptr;
-    if(web->page() != page)
-    {
-     temp = web->page();
-    }
-    page->setUrl(url);
-    web->setPage(page);
-
-    if(temp != nullptr)
-    {
-     delete temp;
-    }
-}
-
-void Office::on_home_clicked()
-{;
-
-    changePage(pageurl[PageName::home]);
+    temp = web->page();
+    QWebEnginePage *newPage = new QWebEnginePage;
+    newPage->setUrl(url);
+    web->setPage(newPage);
+    delete temp;
 }
 
 void Office::on_word_clicked()
@@ -297,7 +321,6 @@ void Office::on_word_clicked()
 
 void Office::on_excel_clicked()
 {
-
     changePage(pageurl[PageName::excel]);
 }
 

@@ -371,12 +371,12 @@ void Office::onPageUrlChange()
         ui->title->setText("Word");
         changeColor("#19478a","white");
     }
-    else if (temp.contains(pageurl[PageName::excel],Qt::CaseInsensitive) || temp.contains("app=Excel",Qt::CaseInsensitive))
+    else if (temp.contains(pageurl[PageName::excel],Qt::CaseInsensitive) || temp.contains("app=Excel",Qt::CaseInsensitive) || temp.contains("file%2cxlsx",Qt::CaseInsensitive))
     {
         ui->title->setText("Excel");
         changeColor("#0a6332","white");
     }
-    else if (temp.contains(pageurl[PageName::powerPoint],Qt::CaseInsensitive) || temp.contains("Cpptx" , Qt::CaseInsensitive))
+    else if (temp.contains(pageurl[PageName::powerPoint],Qt::CaseInsensitive) || temp.contains("Cpptx" , Qt::CaseInsensitive) || temp.contains("file%2cpptx",Qt::CaseInsensitive))
     {
         ui->title->setText("PowerPoint");
         changeColor("#b83b1d","white");
